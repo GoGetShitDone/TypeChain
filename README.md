@@ -20,8 +20,7 @@ npm init -y
 - tsconfig.json 파일은 프로젝트를 컴파일하는 데 필요한 루트 파일과 컴파일러 옵션을 지정
 - https://www.typescriptlang.org/docs/handbook/tsconfig-json.html#handbook-content
 
-
-### Target (기본값: ES3)
+### Target (기본값: ES3) -> ES6
 - 최신 브라우저는 모든 ES6 기능을 지원하므로 ES6 선택
 - 코드가 이전 환경에 배포된 경우 더 낮은 target을 설정하거나 최신 환경에서 코드 실행이 보장되는 경우 더 높은 target을 설정하도록 선택 가능
 - (ex) 화살표 함수() => this는 ES5 이하이면 함수 표현식으로 변경
@@ -31,4 +30,4 @@ https://www.typescriptlang.org/tsconfig#target
 
 ### "build": "tsc" 또는 "npx tsc"
 ```### npm run build```
-# TypeChain
+
