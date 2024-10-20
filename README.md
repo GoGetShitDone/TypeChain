@@ -1,5 +1,7 @@
 # TypeChain
 
+## 설치 및 환경설정
+
 ### typescript 설치
 npm i -D typescript
 
@@ -31,3 +33,25 @@ https://www.typescriptlang.org/tsconfig#target
 ### "build": "tsc" 또는 "npx tsc"
 ```### npm run build```
 
+
+## 세부 진행과정 
+
+### Type Script 개념 이해 단계
+1. Types
+2. Call Signatures
+3. Overloading
+4. Polymorphism 
+5. Generics Recap
+6. Class
+7. Interfaces
+8. Polymorphism
+
+### 세부 코드 작성 단계 
+1. Targets
+2. Lib Configuration
+3. Declaration Files
+4. JSDoc
+5. Blocks
+6. DefinitelyTyped
+7. Chain
+8. Conclusions
