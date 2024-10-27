@@ -1,7 +1,11 @@
 {
-    "include": ["src"],
+    "include": ["src", "myPackage.d.ts"],
     "compilerOptions": {
         "outDir": "build",
-        "target": "ES6"
+        "esModuleInterop": true,
+        "target": "ES6",
+        "lib": ["ES6", "DOM"],
+        "strict": true,
+        "allowJs": true,
     }
 }
