@@ -635,3 +635,165 @@ myAccount.deposit(1000);  // OK: public 메서드
  *    - public: 어디서나 접근 가능
  *    - protected: 해당 클래스와 상속받은 클래스에서만 접근 가능
  */
+
+
+
+///////////////////////////////
+///////////////////////////////
+///////////////////////////////
+
+
+/**
+ * TypeScript 고급 개념 구현 예제: 제네릭 스토리지 시스템
+ * 
+ * 구현된 개념들:
+ * 1. 제네릭 (Generics)
+ * 2. 인터페이스 (Interface)
+ * 3. 접근 제어자 (Access Modifiers)
+ * 4. 타입 인덱싱 (Type Indexing)
+ * 5. CRUD 패턴 구현
+ */
+
+// 제네릭 인터페이스: 타입 T를 파라미터로 받아 사용
+interface StorageItem<T> {
+    value: T;
+    timestamp: number;
+}
+
+// 스토리지 인터페이스: 문자열 키와 제네릭 타입 T를 가진 객체
+interface Storage<T> {
+    [key: string]: StorageItem<T>;
+}
+
+// 스토리지 동작 정의 인터페이스
+interface IStorage<T> {
+    set(key: string, value: T): void;
+    get(key: string): T | undefined;
+    update(key: string, value: T): void;
+    remove(key: string): void;
+    clear(): void;
+}
+
+// 제네릭 클래스 구현
+class LocalStorage<T> implements IStorage<T> {
+    // private 접근 제어자로 외부 직접 접근 방지
+    private storage: Storage<T> = {};
+    
+    // Create: 새로운 아이템 추가
+    set(key: string, value: T): void {
+        if (this.storage[key] !== undefined) {
+            console.log(`${key}가 이미 존재합니다. update를 호출하세요.`);
+            return;
+        }
+        
+        // 타임스탬프와 함께 저장
+        this.storage[key] = {
+            value,
+            timestamp: Date.now()
+        };
+    }
+    
+    // Read: 아이템 조회
+    get(key: string): T | undefined {
+        if (this.storage[key] === undefined) {
+            console.log(`${key}가 존재하지 않습니다.`);
+            return undefined;
+        }
+        return this.storage[key].value;
+    }
+    
+    // Update: 기존 아이템 업데이트
+    update(key: string, value: T): void {
+        if (this.storage[key] === undefined) {
+            console.log(`${key}가 존재하지 않아 새로 만듭니다.`);
+        }
+        
+        this.storage[key] = {
+            value,
+            timestamp: Date.now()
+        };
+    }
+    
+    // Delete: 아이템 삭제
+    remove(key: string): void {
+        if (this.storage[key] === undefined) {
+            console.log(`${key}가 존재하지 않습니다.`);
+            return;
+        }
+        delete this.storage[key];
+    }
+    
+    // 전체 스토리지 초기화
+    clear(): void {
+        this.storage = {};
+    }
+    
+    // 추가 유틸리티 메서드들
+    
+    // 모든 키 반환
+    getKeys(): string[] {
+        return Object.keys(this.storage);
+    }
+    
+    // 저장된 아이템 개수 반환
+    size(): number {
+        return Object.keys(this.storage).length;
+    }
+    
+    // 특정 키의 마지막 수정 시간 반환
+    getLastModified(key: string): Date | undefined {
+        if (this.storage[key] === undefined) {
+            return undefined;
+        }
+        return new Date(this.storage[key].timestamp);
+    }
+}
+
+// 사용 예시
+// 문자열을 저장하는 스토리지
+const stringsStorage = new LocalStorage<string>();
+stringsStorage.set("name", "Alice");
+stringsStorage.set("greeting", "Hello");
+console.log(stringsStorage.get("name")); // "Alice"
+
+// 불리언을 저장하는 스토리지
+const booleanStorage = new LocalStorage<boolean>();
+booleanStorage.set("isActive", true);
+booleanStorage.update("isActive", false);
+console.log(booleanStorage.get("isActive")); // false
+
+// 커스텀 타입 예시
+interface User {
+    name: string;
+    age: number;
+}
+
+// User 객체를 저장하는 스토리지
+const userStorage = new LocalStorage<User>();
+userStorage.set("user1", { name: "Bob", age: 30 });
+console.log(userStorage.get("user1")); // { name: "Bob", age: 30 }
+
+/**
+ * 구현된 타입스크립트 기능 설명:
+ * 
+ * 1. 제네릭 (<T>):
+ *    - 타입을 파라미터로 받아 재사용 가능한 코드 작성
+ *    - Storage<T>, LocalStorage<T> 등에서 사용
+ * 
+ * 2. 인터페이스:
+ *    - StorageItem: 저장될 아이템의 구조 정의
+ *    - Storage: 스토리지 객체의 구조 정의
+ *    - IStorage: 스토리지 클래스가 구현해야 할 메서드 정의
+ * 
+ * 3. 타입 인덱싱:
+ *    - [key: string]: StorageItem<T> 형태로 동적 키 허용
+ * 
+ * 4. 접근 제어자:
+ *    - private storage: 내부 구현 은닉
+ * 
+ * 5. CRUD 패턴:
+ *    - Create (set)
+ *    - Read (get)
+ *    - Update (update)
+ *    - Delete (remove)
+ */
