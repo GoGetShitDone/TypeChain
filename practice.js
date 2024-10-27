@@ -332,56 +332,6 @@ const nnnico : PPPlayer = {
 //////[-- interface & class --]///////
 //////////////////////////////////////
 
-
-
-abstract class Human {
-    constructor(
-        protected firstName: string,
-        protected lastName: string
-    ) {}
-    abstract sayHi(name:string):string
-    abstract fullName(name:string)
-}
-
-
-// 인터페이스 다중 상속가능
-class  implements User,Human{
-    constructor(
-    // 인터페이스를 상속하면 public property만 사용할 수 있다는 문제가 있다.
-    public firstName :string,
-    public lastName:string,
-    public health :string,
-    ){}
-    sayHi(name:string) {
-    return `hi ${name}. My name is ${this.fullName()}`
-    }
-    fullName(){
-    return `${this.firstName} ${this.lastName}`;
-    }
-    }
-    
-    // 인터페이스도 타입처럼 사용 가능
-    
-    function makeUser(user:User):User{
-    return {
-    firstName :'hw',
-    lastName: 'kim',
-    sayHi:(name)=>'hi',
-    fullName: ()=>'xx',
-    }
-    }
-    
-    makeUser({
-    firstName :'hw',
-    lastName: 'kim',
-    sayHi:(name)=>'hi',
-    fullName: ()=>'xx',
-    })
-
-/////////////////////////////
-/////////////////////////////
-/////////////////////////////
-
 // 인터페이스는 타입스크립트의 핵심 기능으로, 객체의 "계약서" 또는 "설계도" 역할을 합니다.
 // JavaScript로 컴파일되면 완전히 사라지므로 런타임 오버헤드가 없습니다.
 interface User {
@@ -478,4 +428,210 @@ interface User {
  2. 유지보수성: 인터페이스를 통해 코드의 구조를 명확히 파악 가능
  3. 재사용성: 인터페이스를 통해 코드를 쉽게 재사용 가능
  4. 확장성: 인터페이스를 구현하는 새로운 클래스를 쉽게 추가 가능
+ */
+
+
+abstract class Human {
+    constructor(
+        protected firstName: string,
+        protected lastName: string
+    ) {}
+    abstract sayHi(name:string):string
+    abstract fullName(name:string)
+}
+
+
+// 인터페이스 다중 상속가능
+class  implements User,Human{
+    constructor(
+    // 인터페이스를 상속하면 public property만 사용할 수 있다는 문제가 있다.
+    public firstName :string,
+    public lastName:string,
+    public health :string,
+    ){}
+    sayHi(name:string) {
+    return `hi ${name}. My name is ${this.fullName()}`
+    }
+    fullName(){
+    return `${this.firstName} ${this.lastName}`;
+    }
+    }
+    
+    // 인터페이스도 타입처럼 사용 가능
+    
+    function makeUser(user:User):User{
+    return {
+    firstName :'hw',
+    lastName: 'kim',
+    sayHi:(name)=>'hi',
+    fullName: ()=>'xx',
+    }
+    }
+    
+    makeUser({
+    firstName :'hw',
+    lastName: 'kim',
+    sayHi:(name)=>'hi',
+    fullName: ()=>'xx',
+    })
+
+/////////////////////////////
+/////////////////////////////
+/////////////////////////////
+
+
+/**
+ * TypeScript 핵심 개념 정리
+ * 
+ * 주요 질문들:
+ * 1. 추상 클래스란 무엇인가?
+ * 2. 추상화란 무엇인가?
+ * 3. constructor의 역할은?
+ * 4. void와 new의 의미는?
+ * 5. this 키워드의 의미는?
+ * 6. private과 같은 접근 제어자의 역할은?
+ */
+
+// 1. 추상 클래스와 추상화
+abstract class Animal {
+    // 추상 클래스: 직접 인스턴스화할 수 없고, 상속을 통해서만 사용 가능
+    constructor(protected name: string) {}
+    
+    // 일반 메서드: 구현이 있는 메서드
+    eat() {
+        console.log(`${this.name}이(가) 먹이를 먹습니다.`);
+    }
+    
+    // 추상 메서드: 상속받는 클래스에서 반드시 구현해야 함
+    abstract makeSound(): void;
+}
+
+// 추상 클래스 구현
+class Dog extends Animal {
+    makeSound() {
+        console.log("멍멍!");
+    }
+}
+
+// 2. 추상화의 예시 - 복잡한 내부 구현을 감추고 간단한 인터페이스 제공
+class Car {
+    private engineRunning: boolean = false;
+    private fuelAmount: number = 100;
+    
+    // 복잡한 내부 동작을 간단한 메서드로 추상화
+    start() {
+        this.checkFuel();
+        this.initializeEngine();
+        this.engineRunning = true;
+        console.log("차가 시동됩니다.");
+    }
+    
+    private checkFuel() {
+        if (this.fuelAmount < 10) {
+            throw new Error("연료가 부족합니다.");
+        }
+    }
+    
+    private initializeEngine() {
+        // 복잡한 엔진 초기화 로직...
+    }
+}
+
+// 3. Constructor와 this 키워드
+class Person {
+    // 클래스의 프로퍼티 정의
+    private age: number;
+    public name: string;
+    
+    // constructor: 객체 초기화를 담당하는 특별한 메서드
+    constructor(name: string, age: number) {
+        // this: 현재 생성되는 객체 자신을 가리킴
+        this.name = name;  // this.name은 위에서 정의한 프로퍼티
+        this.age = age;    // this.age는 위에서 정의한 프로퍼티
+    }
+    
+    // 메서드에서의 this 사용
+    introduce() {
+        // this를 통해 현재 객체의 프로퍼티에 접근
+        console.log(`안녕하세요, ${this.name}입니다. ${this.age}살입니다.`);
+    }
+}
+
+// 4. void와 new 키워드
+class Example {
+    // void: 반환값이 없는 함수의 반환 타입
+    printHello(): void {
+        console.log("Hello!");
+        // return 값이 없음
+    }
+    
+    // 값을 반환하는 함수와 비교
+    getMessage(): string {
+        return "Hello!";
+    }
+}
+
+// new: 클래스의 새로운 인스턴스(객체)를 생성
+const person1 = new Person("철수", 20);
+const person2 = new Person("영희", 25);
+
+// 5. 접근 제어자 (Access Modifiers)
+class BankAccount {
+    // private: 클래스 내부에서만 접근 가능
+    private balance: number = 0;
+    
+    // public: 어디서나 접근 가능 (기본값)
+    public accountHolder: string;
+    
+    // protected: 해당 클래스와 상속받은 클래스에서만 접근 가능
+    protected accountNumber: string;
+    
+    constructor(holder: string, accountNum: string) {
+        this.accountHolder = holder;
+        this.accountNumber = accountNum;
+    }
+    
+    // public 메서드를 통한 private 데이터 접근
+    deposit(amount: number): void {
+        if (amount > 0) {
+            this.balance += amount;
+            this.logTransaction("입금", amount);
+        }
+    }
+    
+    // private 메서드
+    private logTransaction(type: string, amount: number): void {
+        console.log(`${type}: ${amount}원 (잔액: ${this.balance}원)`);
+    }
+}
+
+// 사용 예시
+const myAccount = new BankAccount("홍길동", "1234-5678");
+myAccount.deposit(1000);  // OK: public 메서드
+// myAccount.balance  // 에러: private 속성에 직접 접근 불가
+// myAccount.logTransaction  // 에러: private 메서드에 직접 접근 불가
+
+/**
+ * 핵심 정리:
+ * 
+ * 1. 추상 클래스와 추상화
+ *    - 추상 클래스: 직접 인스턴스화할 수 없는 클래스
+ *    - 추상화: 복잡한 내부 구현을 감추고 간단한 인터페이스 제공
+ * 
+ * 2. Constructor
+ *    - 객체가 생성될 때 자동으로 호출되는 특별한 메서드
+ *    - 객체의 초기 상태를 설정하는 역할
+ * 
+ * 3. this 키워드
+ *    - 현재 객체 자신을 가리키는 참조
+ *    - 객체의 프로퍼티와 메서드에 접근할 때 사용
+ * 
+ * 4. void와 new
+ *    - void: 함수가 값을 반환하지 않음을 나타내는 타입
+ *    - new: 클래스의 새로운 인스턴스를 생성하는 연산자
+ * 
+ * 5. 접근 제어자
+ *    - private: 클래스 내부에서만 접근 가능
+ *    - public: 어디서나 접근 가능
+ *    - protected: 해당 클래스와 상속받은 클래스에서만 접근 가능
  */
